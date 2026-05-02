@@ -13,7 +13,7 @@ const checkUser = (req ,res, next)=>{
     }
 
     const decoded = jwt.verify(token , config.JWT_SECRET)
-    req.user = decoded
+    req.user = decoded.id
     next()
         
     } catch (error) {
