@@ -8,8 +8,7 @@ const registerUserController = async(req , res , next)=>{
     try {
 
         const {email , password} = req.body
-        const id = req.user.id
-        console.log(id)
+      
         //check if email already exist
 
         const user = await userModel.findOne({email})

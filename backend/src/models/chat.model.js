@@ -20,7 +20,7 @@ const chatSchema = new mongoose.Schema({
     
 })
 
-chatSchema.index({ businessId: 1, sessionId: 1 }, { unique: true });
+
 
 const chatModel = mongoose.model("Chat", chatSchema)
 

@@ -1,18 +1,28 @@
-import { HumanMessage } from "@langchain/core/messages"
+
+import { getAiResponseService } from "../services/chat.services.js";
 import { chatWithAi } from "../services/langchain.services.js"
 import {v4 as uuidv4} from "uuid"
 
 
 const chatController = async(req , res, next)=>{
     try {
-
-        const {userMessage} = req.body
-        const message = [new HumanMessage(userMessage)]
-        const response = await chatWithAi(message)
-        res.status(200).json({response})
+        
+        const businessId = req.user.id;
+        
+        const { userMessage , chatId} = req.body;
+        const sessionId = req.cookies.sessionId;
+        
+        const {aiResponse , chat} = await getAiResponseService({userMessage , chatId , businessId , sessionId})
+    
+       
+        res.status(200).json({
+            success : "true",
+            data : aiResponse,
+            chatId : chat
+        })
         
     } catch (error) {
-
+console.log(error)
         next(error)
         
     }

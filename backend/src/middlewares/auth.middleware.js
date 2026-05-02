@@ -4,7 +4,6 @@ import config from "../config/config.js"
 
 const checkUser = (req ,res, next)=>{
     try {
-
         const token = req.cookies.token
     if(!token){
         const err = new Error("Not authorized")
@@ -14,6 +13,7 @@ const checkUser = (req ,res, next)=>{
 
     const decoded = jwt.verify(token , config.JWT_SECRET)
     req.user = decoded
+    
     next()
         
     } catch (error) {
