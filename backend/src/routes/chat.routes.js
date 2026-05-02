@@ -6,7 +6,7 @@ import { checkUser } from "../middlewares/auth.middleware.js"
 const chatRouter = Router()
 
 
-chatRouter.post("/",checkUser, chatController)
+chatRouter.post("/", chatController)
 chatRouter.post("/init", initSessionController)
 
 export default chatRouter

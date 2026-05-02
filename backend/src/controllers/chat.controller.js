@@ -7,12 +7,12 @@ import {v4 as uuidv4} from "uuid"
 const chatController = async(req , res, next)=>{
     try {
         
-        const businessId = req.user.id;
+        // const businessId = req.user.id;
         
         const { userMessage , chatId} = req.body;
         const sessionId = req.cookies.sessionId;
         
-        const {aiResponse , chat} = await getAiResponseService({userMessage , chatId , businessId , sessionId})
+        const {aiResponse , chat} = await getAiResponseService({userMessage , chatId  , sessionId})
     
        
         res.status(200).json({
@@ -46,6 +46,7 @@ const initSessionController = (req , res , next)=>{
     })
     
 }
+
 
 export {
     chatController, 
