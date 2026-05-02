@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme{
+  --color-background: #fffaea;
+  --color-surface: #121821;
+
+  --color-text: #E6EDF3;
+  --color-muted: #9AA4B2;
+
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+
+  --color-success: #22C55E;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+  --font-mozilla : 'Mozilla Headline', sans-serif;
+}
