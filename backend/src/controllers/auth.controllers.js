@@ -1,34 +1,28 @@
 import userModel from "../models/user.model.js"
-import { generateToken } from "../services/auth.services.js"
+import { generateToken, registerUserService } from "../services/auth.services.js"
 
 
 
 
-const registerUserController = async(req , res , next)=>{
+const registerUserController = async(req , res ,next)=>{
     try {
 
         const {email , password} = req.body
-        const id = req.user.id
-        console.log(id)
+       
         //check if email already exist
 
-        const user = await userModel.findOne({email})
-        if(user){
-            const err = new Error("Email already exist")
-            err.statusCode = 400
-            throw err;
-            return
-        }
+       
+        const response = await registerUserService({email , password})
 
-
-        const newUser = await userModel.create({email , password})
-
-        const token = generateToken(newUser._id);
-        res.cookie("token", token)
+        
+        res.cookie("token", response.token)
         
         res.status(200).json({
             message : "user created successfully",
-            user : newUser
+            user : {
+               id :  response._id,
+            email : response.email
+            }
         })
 
 
