@@ -4,13 +4,13 @@ import { createBotService, getBotsService, updateBotService, deleteBotService } 
 const createBotController = async (req, res) => {
   try {
     const businessId = req.user  // from checkUser middleware
-    const { name, systemPrompt, widgetSettings } = req.body
+    const { name, systemPrompt, widgetSettings,questions } = req.body
 
-    const bot = await createBotService({ businessId, name, systemPrompt, widgetSettings })
+    const bot = await createBotService({ businessId, name, systemPrompt, widgetSettings,questions })
 
     res.status(201).json({
       success: true,
-      data: bot
+      bot: bot
     })
   } catch (error) {
     res.status(400).json({

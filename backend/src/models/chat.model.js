@@ -5,7 +5,7 @@ import mongoose  from "mongoose";
 const chatSchema = new mongoose.Schema({
      botId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Bot",
+    ref: "bot",
     required: true
   },
     businessId: {

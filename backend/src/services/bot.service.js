@@ -1,14 +1,22 @@
 import botModel from "../models/bot.model.js";
+import questionModel from "../models/question.model.js";
 
 
 
-const createBotService = async ({ businessId, name, systemPrompt, widgetSettings }) => {
+const createBotService = async ({ businessId, name, systemPrompt, widgetSettings,questions }) => {
   const bot = await botModel.create({
     businessId,
     name,
     systemPrompt,
     widgetSettings
     // embedToken is auto generated in the model
+  })
+
+  const businessQuestions = await questionModel.create({
+    businessId,
+    botId: bot._id,
+    questions
+
   })
   return bot
 }
