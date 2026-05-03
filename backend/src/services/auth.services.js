@@ -6,24 +6,8 @@ import generateToken from "../utils/generateToken.utils.js";
 
 
 
-// token generation
-//  const generateToken = (id) => {
-//   try {
 
-//       const token  = jwt.sign({
-//         id : id
-//     } , config.JWT_SECRET , {
-//         expiresIn : config.JWT_EXPIRE
-//     })
-//     return token
-    
-//   } catch (error) {
-//     console.log(error)
-//     return error
-//   }
-// };
-
-const registerUserService = async({email, password})=>{
+const registerUserService = async({email, password, name})=>{
 
 const existingUser = await userModel.findOne({ email })
   if (existingUser) {
@@ -31,11 +15,12 @@ const existingUser = await userModel.findOne({ email })
   }
 
   // create new business
-  const user = await userModel.create({ email, password })
+  const user = await userModel.create({ email, password , name })
 
   return {
     _id: user._id,
     email: user.email,
+    name: user.name,
     token: generateToken(user._id)
   }
 
@@ -44,7 +29,43 @@ const existingUser = await userModel.findOne({ email })
 }
 
 
+ const findOrCreateUser = async (userData) => {
+  // destructure from Google profile
+  const { id, displayName, name, emails, photos } = userData;
+
+  // check if user exists
+  const user = await userModel.findOne({
+    $or: [
+      { googleId: id },
+      ...(emails?.[0]?.value ? [{ email: emails[0].value }] : []),
+    ],
+  });
+
+  if (user) {
+    return user;
+  }
+
+  // build full name
+  const fullName = name
+    ? `${name.givenName || ""} ${name.familyName || ""}`.trim()
+    : displayName;
+
+  // extract email safely
+  const email = emails?.[0]?.value;
+
+  // create new user
+  const newUser = await userModel.create({
+    name: fullName,
+    googleId: id,
+    ...(email && { email }),
+    avatar: photos?.[0]?.value, // 🔥 optional but useful
+  });
+
+  return newUser;
+};
+
+
 export { 
-    generateToken, 
-    registerUserService
+    registerUserService, 
+    findOrCreateUser
 }

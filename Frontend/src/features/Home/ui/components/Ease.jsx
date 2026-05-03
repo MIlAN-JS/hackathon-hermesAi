@@ -60,10 +60,10 @@ const Ease = () => {
         {/* Badge & Headline */}
         <motion.div variants={itemVariants} className="mb-12">
           <span className="inline-block px-3 py-1 rounded-md bg-[#BCCCDC] text-slate-700 text-sm font-medium mb-6">
-            Why Ease
+            Why Assitly 
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl text-[#1D3A2F] font-serif leading-tight max-w-2xl">
-            A super-powered system, working together.
+            A super-powered AI, with a human touch
           </h2>
         </motion.div>
 

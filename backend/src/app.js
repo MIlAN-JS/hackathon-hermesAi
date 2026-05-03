@@ -5,7 +5,7 @@ import errHandler from './middlewares/error.middleware.js'
 import chatRouter from './routes/chat.routes.js'
 import authRouter from './routes/auth.routes.js'
 import botRouter from './routes/bot.routes.js'
-
+import passport from "./config/passport.js"
 const app = express()
 
 // middlewares
@@ -15,9 +15,15 @@ app.use(cookieParser())
 app.use(express.static("public"))
 
 // routes with cors
-app.use("/api/auth", cors({ origin: "https://localhost:5173", credentials: true }), authRouter)
-app.use("/api/bot", cors({ origin: "https://localhost:5173", credentials: true }), botRouter)
+app.use("/auth", cors({ origin: "http://localhost:5173", credentials: true }), authRouter)
+app.use("/api/bot", cors({ origin: "http://localhost:5173", credentials: true }), botRouter)
 app.use("/api/chat", cors({ origin: "*" }), chatRouter)
+
+
+// google strategy
+
+app.use(passport.initialize());
+
 
 // error handler
 app.use(errHandler)

@@ -140,14 +140,15 @@ export default function LandingPage() {
       <CrazyTransitionSection/>
 
         <Ease/>
+        <PricingSection/>
         <CaseStudySection/>
     
-      <PricingSection/>
+      
 
-      <div>
+      
   
-        <Features/>
-      </div>
+       
+    
 
 
       <Footer/>

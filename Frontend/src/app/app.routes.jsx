@@ -5,6 +5,10 @@ import LandingLayout from "./LandingLayout";
 import SignIn from "../features/auth/ui/SignIn";
 import LandingPage from "../features/Home/ui/LandingPage";
 import PricingSection from "../features/Pricing/ui/Pricing";
+import Dashboard from "../features/Dashboard/ui/Dashboard";
+import ConfigBot from "../features/bots/ui/ConfigBot";
+import Login from "../features/auth/ui/Login";
+import PrivateRoute from "./Private";
 
 export const router = createBrowserRouter([
   // Landing (NO navbar/footer)
@@ -23,13 +27,23 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/signin",
-        element: <SignIn />,
+        path: "/login",
+        element: <Login />,
       },
       {
         path: "/pricing",
         element: <PricingSection />,
       },
+      {
+        path:"/dashboard",
+        element:<PrivateRoute><Dashboard/></PrivateRoute>
+      }, 
+      {
+        path : "/bots", 
+        element :<PrivateRoute><ConfigBot/></PrivateRoute> 
+      }, {
+
+      }
     ],
   },
 ]);

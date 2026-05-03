@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, use } from 'react';
 import { Link } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
+import useAuth from '../features/auth/hooks/useAuth';
 
 function Logo() {
   return (
@@ -30,7 +31,10 @@ function Logo() {
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // replace with real auth
+  const isLoggedIn = useSelector(state => state.auth.isAuthenticated)
+  console.log(isLoggedIn)
+  const user = useSelector(state => state.auth.user)
+  console.log(user)
   const dropdownRef = useRef(null);
 
   // Close dropdown when clicking outside
@@ -45,15 +49,24 @@ const Navbar = () => {
   }, []);
 
   const privateLinks = [
+     {label : "Home", to : "/"},
     { label: 'Dashboard', to: '/dashboard' },
     { label: 'Bots', to: '/bots' },
+   
   ];
 
   const publicLinks = [
+    {label : "Home", to : "/"},
     { label: 'Features', to: '/features' },
     { label: 'Pricing', to: '/pricing' },
     { label: 'Contact', to: '/contact' },
+    
   ];
+
+  const {handleLogoutUser} = useAuth()
+
+ 
+
 
   const navLinks = isLoggedIn ? privateLinks : publicLinks;
 
@@ -89,8 +102,8 @@ const Navbar = () => {
               className="flex items-center gap-2 hover:opacity-80 transition"
             >
               {/* Avatar Circle */}
-              <div className="w-9 h-9 rounded-full bg-[#1a3a2a] flex items-center justify-center text-white text-sm font-semibold">
-                A
+              <div className="w-9 h-9 rounded-full bg-[#1a3a2a] flex items-center justify-center text-white text-sm font-semibold overflow-hidden">
+               <img src={user.avatar} alt="" />
               </div>
               {/* Chevron */}
               <svg
@@ -123,6 +136,7 @@ const Navbar = () => {
                   onClick={() => {
                     setDropdownOpen(false);
                     // handle logout
+                      handleLogoutUser();
                   }}
                   className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition"
                 >
@@ -134,14 +148,9 @@ const Navbar = () => {
         ) : (
           /* Login + Get Started */
           <>
+            
             <Link
               to="/login"
-              className="text-[#1a3a2a] text-sm font-medium border border-[#1a3a2a] px-5 py-2 rounded-md hover:bg-[#1a3a2a] hover:text-white transition-all duration-200"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
               className="bg-[#1a3a2a] text-white text-sm font-medium px-5 py-2 rounded-md hover:opacity-85 transition-all duration-200"
             >
               Get Started

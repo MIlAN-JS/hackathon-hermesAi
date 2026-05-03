@@ -11,8 +11,11 @@ const config = {
     JWT_COOKIE_EXPIRE : process.env.JWT_COOKIE_EXPIRE,
     JWT_EXPIRE : process.env.JWT_EXPIRE, 
     MISTRAL_API_KEY : process.env.MISTRAL_API_KEY, 
-    GROQ_API_KEY : process.env.GROQ_API_KEY
-
+    GROQ_API_KEY : process.env.GROQ_API_KEY,
+    GOOGLE_CLIENT_ID : process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET : process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_CALLBACK_URL : process.env.GOOGLE_CALLBACK_URL
+    
 }
 
 

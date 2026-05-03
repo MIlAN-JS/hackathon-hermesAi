@@ -1,5 +1,8 @@
 import userModel from "../models/user.model.js"
-import { generateToken, registerUserService } from "../services/auth.services.js"
+import {  registerUserService } from "../services/auth.services.js"
+// import asyncHandler from "express-async-handler";
+import { findOrCreateUser } from "../services/auth.services.js";
+import generateToken from "../utils/generateToken.utils.js";
 
 
 
@@ -7,21 +10,18 @@ import { generateToken, registerUserService } from "../services/auth.services.js
 const registerUserController = async(req , res ,next)=>{
     try {
 
-        const {email , password} = req.body
-       
-        //check if email already exist
-
-       
-        const response = await registerUserService({email , password})
-
-        
+        const {name , email , password} = req.body
+          
+        const response = await registerUserService({email , password ,name})
+ 
         res.cookie("token", response.token)
         
         res.status(200).json({
             message : "user created successfully",
             user : {
                id :  response._id,
-            email : response.email
+            email : response.email, 
+            name : response.name
             }
         })
 
@@ -34,6 +34,103 @@ const registerUserController = async(req , res ,next)=>{
     }
 }
 
+
+
+ const getCurrentUserController = async (req, res) => {
+  try {
+    const userId= req.user;
+    console.log(userId)
+    const user = await userModel.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error cannot fetch user" });
+  }
+};
+
+
+const logoutController = async(req , res ,next)=>{
+    try {
+        
+        const userId = req.user
+
+        // check if user exist 
+        const user = await userModel.findById(userId)
+        if(!user){
+            return res.status(400).json({
+                message : "Cannot find user", 
+                success : false
+            })
+        }
+
+        // fetch the token 
+
+        const token = req.cookies.token
+
+        // // blacklisting the token :} STORING TOKEN IN REDDIS DATABASE
+
+        // await redis.set("userToken" , token, "EX"  , 60*60)
+
+        // deleting token from frontend
+
+        res.clearCookie("token")
+
+
+        res.status(200).json({
+            message : "logout success", 
+            success : true
+        })
+        
+
+
+    } catch (error) {
+         console.log(error , "logout error ")
+        next(error)
+       
+        
+    }
+}
+
+
+
+ const googleCallbackController = async (req, res, next) => {
+
+  try {
+
+    const userData = req.user;
+
+  if (!userData) {
+    return res.redirect("http://localhost:5173/login");
+  }
+
+  const user = await findOrCreateUser(userData);
+
+  const token = generateToken(user._id);
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: false, // 🔥 set true in production (HTTPS)
+    sameSite: "lax",
+  });
+
+  return res.redirect("http://localhost:5173/dashboard"); // changed from login to your route
+    
+  } catch (error) {
+
+    console.log(error)
+    next(error)
+    
+  }
+};
+
 export {
-    registerUserController
+    registerUserController,
+    getCurrentUserController, 
+    googleCallbackController, 
+    logoutController
 }
