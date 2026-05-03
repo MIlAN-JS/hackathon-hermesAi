@@ -38,7 +38,9 @@ const loginUserService = async ({ email, password }) => {
 
 const logoutUserService = async () =>{
   try {
+    console.log("service logout ")
     const response = await api.post("/logout")
+    console.log(response)
     return response.data
   } catch (error) {
     console.log(error)
@@ -56,8 +58,7 @@ const getUserService = async (id)=>{
         const response = await api.get("/get-user")
         return response.data
     } catch (error) {
-        console.log(error)
-        return error
+        throw error
     }
 }
 

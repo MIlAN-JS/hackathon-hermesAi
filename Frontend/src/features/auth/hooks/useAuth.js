@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { authStart , authSuccess , authFailure , logout , clearError } from "../state/authSlice.js";
-import { registerUserService , loginUserService , getUserService } from "../services/auth.services.js";
+import { registerUserService , loginUserService , getUserService , logoutUserService} from "../services/auth.services.js";
 
 
 const useAuth = ()=>{
@@ -45,8 +45,8 @@ const useAuth = ()=>{
         try {
             dispatch(authStart())
             const response = await getUserService()
-            dispatch(authSuccess(response.user))
-  
+            
+          response ? dispatch(authSuccess(response)) : dispatch(logout())
         } catch (error) {
           console.log(error)
           dispatch(authFailure(error.message))
@@ -57,11 +57,13 @@ const useAuth = ()=>{
 
       const handleLogoutUser = async()=>{
 
+
         try {
             dispatch(authStart())
             const response = await logoutUserService()
             dispatch(logout())
             dispatch(clearError())
+            console.log("logout hook")
   
         } catch (error) {
           console.log(error)

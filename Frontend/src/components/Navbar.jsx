@@ -103,7 +103,7 @@ const Navbar = () => {
             >
               {/* Avatar Circle */}
               <div className="w-9 h-9 rounded-full bg-[#1a3a2a] flex items-center justify-center text-white text-sm font-semibold overflow-hidden">
-               <img src={user.avatar} alt="" />
+               <img src={user?.avatar} alt=""  />
               </div>
               {/* Chevron */}
               <svg
