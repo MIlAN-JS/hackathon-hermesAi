@@ -34,7 +34,8 @@ const Navbar = () => {
   const isLoggedIn = useSelector(state => state.auth.isAuthenticated)
   console.log(isLoggedIn)
   const user = useSelector(state => state.auth.user)
-  console.log(user)
+  
+
   const dropdownRef = useRef(null);
 
   // Close dropdown when clicking outside
@@ -103,7 +104,7 @@ const Navbar = () => {
             >
               {/* Avatar Circle */}
               <div className="w-9 h-9 rounded-full bg-[#1a3a2a] flex items-center justify-center text-white text-sm font-semibold overflow-hidden">
-               <img src={user?.avatar} alt=""  />
+               {/* <img src={user?.user?.avatar} alt=""  /> */}
               </div>
               {/* Chevron */}
               <svg

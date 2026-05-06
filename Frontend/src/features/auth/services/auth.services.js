@@ -51,6 +51,9 @@ const logoutUserService = async () =>{
  const googleLogin =  ()=>{
     window.location.href = "http://localhost:3000/auth/google";
 }
+ const githubLogin =  ()=>{
+    window.location.href = "http://localhost:3000/auth/github";
+}
 
 
 const getUserService = async (id)=>{
@@ -69,5 +72,6 @@ export {
     loginUserService,
     getUserService, 
     googleLogin, 
+    githubLogin,
     logoutUserService
 }

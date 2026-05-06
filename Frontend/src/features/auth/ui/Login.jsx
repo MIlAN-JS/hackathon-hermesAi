@@ -1,7 +1,7 @@
 import { use, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { useSelector } from "react-redux";
-import { googleLogin } from "../services/auth.services";
+import { googleLogin, githubLogin } from "../services/auth.services";
 export default function GetStarted() {
 
   const [isLogin, setIsLogin] = useState(false);
@@ -41,7 +41,7 @@ export default function GetStarted() {
           </button>
 
           <button
-            onClick={() => googleLogin()}
+            onClick={() => githubLogin()}
             className="w-full bg-black text-white p-3 rounded-lg hover:bg-gray-800"
           >
             Continue with GitHub
