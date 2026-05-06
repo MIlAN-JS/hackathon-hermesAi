@@ -29,7 +29,7 @@ const existingUser = await userModel.findOne({ email })
 }
 
 
- const findOrCreateUser = async (userData) => {
+ const findOrCreateUser = async (userData, provider) => {
   // destructure from Google profile
   const { id, displayName, name, emails, photos } = userData;
 
@@ -37,7 +37,7 @@ const existingUser = await userModel.findOne({ email })
   const user = await userModel.findOne({
     $or: [
       { googleId: id },
-      ...(emails?.[0]?.value ? [{ email: emails[0].value }] : []),
+      ...(emails?.[0]?.value ? [  ...(email && { email })] : []),
     ],
   });
 

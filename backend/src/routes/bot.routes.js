@@ -9,8 +9,10 @@ const botRouter = Router()
 botRouter.use(checkUser)  // ← applies checkUser to all routes below
 
 botRouter.post("/create", createBotController)
-botRouter.get("/", getBotsController)
+botRouter.get("/get-bot", getBotsController)
 botRouter.put("/:id", updateBotController)
 botRouter.delete("/:id", deleteBotController)
+
+
 
 export default botRouter

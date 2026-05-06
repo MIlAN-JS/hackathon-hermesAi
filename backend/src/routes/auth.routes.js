@@ -1,5 +1,5 @@
 import {Router} from "express"
-import  { getCurrentUserController, registerUserController , googleCallbackController, logoutController} from "../controllers/auth.controllers.js"
+import  { getCurrentUserController, registerUserController , googleCallbackController, logoutController, githubCallbackController} from "../controllers/auth.controllers.js"
 import { checkUser } from "../middlewares/auth.middleware.js"
 import passport from "../config/passport.js"
 
@@ -19,7 +19,15 @@ authRouter.get('/google/callback',passport.authenticate("google",{
     session: false,
     failureRedirect: '/'
 }), googleCallbackController)
+authRouter.get("/github",
+    passport.authenticate("github", { scope: ["user:email"] })
+);
 
-authRouter.get('/logout', checkUser , logoutController);
+authRouter.get('/github/callback',passport.authenticate("github",{
+    session: false,
+    failureRedirect: '/'
+}), githubCallbackController)
+
+authRouter.post('/logout', checkUser , logoutController);
 
 export default authRouter

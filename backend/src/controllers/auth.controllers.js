@@ -56,6 +56,8 @@ const registerUserController = async(req , res ,next)=>{
 
 const logoutController = async(req , res ,next)=>{
     try {
+
+      console.log("logout check")
         
         const userId = req.user
 
@@ -72,13 +74,11 @@ const logoutController = async(req , res ,next)=>{
 
         const token = req.cookies.token
 
-        // // blacklisting the token :} STORING TOKEN IN REDDIS DATABASE
-
-        // await redis.set("userToken" , token, "EX"  , 60*60)
-
-        // deleting token from frontend
-
-        res.clearCookie("token")
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+      });
 
 
         res.status(200).json({
@@ -127,10 +127,40 @@ const logoutController = async(req , res ,next)=>{
     
   }
 };
+ const githubCallbackController = async (req, res, next) => {
+
+  try {
+
+    const userData = req.user;
+
+  if (!userData) {
+    return res.redirect("http://localhost:5173/login");
+  }
+
+  const user = await findOrCreateUser(userData);
+
+  const token = generateToken(user._id);
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: false, // 🔥 set true in production (HTTPS)
+    sameSite: "lax",
+  });
+
+  return res.redirect("http://localhost:5173/dashboard"); // changed from login to your route
+    
+  } catch (error) {
+
+    console.log(error)
+    next(error)
+    
+  }
+};
 
 export {
     registerUserController,
     getCurrentUserController, 
     googleCallbackController, 
-    logoutController
+    logoutController, 
+    githubCallbackController
 }

@@ -6,11 +6,11 @@ const createBotController = async (req, res) => {
     const businessId = req.user  // from checkUser middleware
     const { name, systemPrompt, widgetSettings,questions } = req.body
 
-    const bot = await createBotService({ businessId, name, systemPrompt, widgetSettings,questions })
+    const bots = await createBotService({ businessId, name, systemPrompt, widgetSettings,questions })
 
     res.status(201).json({
       success: true,
-      bot: bot
+      bots: bots
     })
   } catch (error) {
     res.status(400).json({
@@ -29,7 +29,7 @@ const getBotsController = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: bots
+      bots: bots
     })
   } catch (error) {
     res.status(400).json({
@@ -79,6 +79,28 @@ const deleteBotController = async (req, res) => {
     })
   }
 }
+
+
+
+const getInfoController = async (req, res) => {
+  try {
+    const businessId = req.user
+    const botId = req.params.id
+
+    const bot = await getBotsService({ botId, businessId })
+
+    res.status(200).json({
+      success: true,
+      bot: bot
+    })
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    })
+  }
+}
+
 
 export {
   createBotController,
